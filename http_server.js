@@ -97,10 +97,12 @@ SerialPort.SerialPort.list().then(ports => {
         console.log(port.path);
         console.log(port.pnpId);
         console.log(port.manufacturer);
-        if (port.manufacturer.startsWith("Arduino")) {
-            port_path = port.path;
-            console.log("[ select ]")
-        };
+        if (port.manufacturer !== undefined) {
+            if (port.manufacturer.startsWith("Arduino")) {
+                port_path = port.path;
+                console.log("[ select ]")
+            };
+        }
         console.log("-----------------------")
     });
     console.log(`${port_path} select`)
