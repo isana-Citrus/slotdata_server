@@ -85,10 +85,42 @@ console.log(config.port);
 
 //シリアル通信
 const SerialPort = require('serialport')
-const Readline = require('@serialport/parser-readline')
-const port = new SerialPort.SerialPort({ path: 'COM3', baudRate: 9600 })
+const Readline = require('@serialport/parser-readline');
+
+(() => { console.log("testfunc") })
 const parser = new Readline.ReadlineParser()
-port.pipe(parser)
+let port;
+SerialPort.SerialPort.list().then(ports => {
+    let port_path = "COM3";
+    console.log("-----------------------")
+    ports.forEach(function (port) {
+        console.log(port.path);
+        console.log(port.pnpId);
+        console.log(port.manufacturer);
+        if (port.manufacturer.startsWith("Arduino")) {
+            port_path = port.path;
+            console.log("[ select ]")
+        };
+        console.log("-----------------------")
+    });
+    console.log(`${port_path} select`)
+    port = new SerialPort.SerialPort({ path: port_path, baudRate: 9600 }, (e) => { if (e !== null) { console.log(e); serialport_list(); } else { console.log("serial port ok") } })
+    port.pipe(parser)
+});
+
+async function serialport_list() {
+    const SerialPort = require('serialport');
+    // Promise approach
+    console.log("=======portlist========")
+    SerialPort.SerialPort.list().then(ports => {
+        ports.forEach(function (port) {
+            console.log(port.path);
+            console.log(port.pnpId);
+            console.log(port.manufacturer);
+            console.log("-----------------------")
+        });
+    }).then(() => { console.log("=========end==========="); process.exit(1); });
+}
 //スロットデータ処理
 let r_cnt = 0;
 let farst_data = false;
@@ -103,7 +135,7 @@ const default_data = {
     rush: 0,
 }
 let now_status = default_data;
-SerialPort.list()
+//SerialPort.list()
 let now_port = String(11111);
 parser.on('data', async (line) => {
     //console.log(now_status);

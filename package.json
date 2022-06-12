@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "@serialport/list": "^10.4.0",
+    "@serialport/parser-readline": "^10.3.0",
+    "serialport": "^10.4.0",
+    "sqlite3": "^5.0.8"
+  }
+}
