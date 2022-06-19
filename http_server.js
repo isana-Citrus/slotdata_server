@@ -121,7 +121,10 @@ async function serialport_list() {
             console.log(port.manufacturer);
             console.log("-----------------------")
         });
-    }).then(() => { console.log("=========end==========="); process.exit(1); });
+    }).then(() => {
+        console.log("=========end===========");
+        //process.exit(1);
+    });
 }
 //スロットデータ処理
 let r_cnt = 0;
